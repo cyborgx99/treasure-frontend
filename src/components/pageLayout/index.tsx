@@ -1,34 +1,33 @@
-import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import MenuAppBar from 'components/appBar';
 import React from 'react';
 import {
-  contentScrollable,
-  footer,
-  footerText,
-  mainContainer,
-  mainContent,
+  ContentScrollable,
+  Footer,
+  FooterText,
+  MainContainer,
+  MainContent,
 } from './styles';
 import { PageLayoutProps } from './types';
 
 const PageLayout = ({ children, hasFooter = true }: PageLayoutProps) => {
   const year = new Date().getFullYear();
   return (
-    <Box sx={mainContainer}>
+    <MainContainer>
       <Box>
         <MenuAppBar />
       </Box>
-      <Box sx={mainContent}>
-        <Box sx={contentScrollable}>{children}</Box>
-      </Box>
+      <MainContent>
+        <ContentScrollable>{children}</ContentScrollable>
+      </MainContent>
       {hasFooter && (
-        <Box sx={footer}>
-          <Typography component='p' sx={footerText}>
+        <Footer>
+          <FooterText>
             © {year} Treasure Hunter. All rights reserved (Apparently)
-          </Typography>
-        </Box>
+          </FooterText>
+        </Footer>
       )}
-    </Box>
+    </MainContainer>
   );
 };
 

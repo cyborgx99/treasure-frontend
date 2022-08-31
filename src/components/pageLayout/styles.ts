@@ -1,21 +1,21 @@
-import { Theme } from '@mui/material';
-import { SxProps } from '@mui/system';
+import { Box, Typography } from '@mui/material';
+import { styled } from '@mui/system';
 
-export const mainContainer: SxProps = {
+export const MainContainer = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   position: 'absolute',
   width: '100%',
   height: '100%',
-};
+});
 
-export const mainContent: SxProps = {
+export const MainContent = styled(Box)({
   flex: 1,
   position: 'relative',
   marginBottom: '1rem',
-};
+});
 
-export const contentScrollable: SxProps = {
+export const ContentScrollable = styled(Box)({
   position: 'absolute',
   left: 0,
   right: 0,
@@ -24,19 +24,19 @@ export const contentScrollable: SxProps = {
   overflowY: 'auto',
   display: 'flex',
   flexDirection: 'column',
-};
+});
 
-export const footer: SxProps = {
+export const Footer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  backgroundColor: 'primary.main',
+  backgroundColor: theme.palette.primary.main,
   padding: '1rem',
-  color: 'primary.contrastText',
-};
+  color: theme.palette.primary.contrastText,
+}));
 
-export const footerText: SxProps<Theme> = {
+export const FooterText = styled(Typography)({
   textAlign: 'center',
   flexGrow: 1,
-};
+});

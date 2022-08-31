@@ -1,12 +1,12 @@
-import { Box, CircularProgress } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 import React from 'react';
-import { spinnerSx } from './styles';
+import { SpinnerContainer } from './styles';
 
 const Spinner = () => {
   return (
-    <Box sx={spinnerSx}>
+    <SpinnerContainer>
       <CircularProgress />
-    </Box>
+    </SpinnerContainer>
   );
 };
 
