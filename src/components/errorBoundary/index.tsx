@@ -13,7 +13,6 @@ class ErrorBoundary extends React.Component<
   static getDerivedStateFromError() {
     return { hasError: true };
   }
-
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.log(error);
     console.log(errorInfo);
@@ -33,11 +32,7 @@ class ErrorBoundary extends React.Component<
       return <Spinner />;
     }
 
-    if (hasError) {
-      return <ErrorPage reload={this.reload} />;
-    }
-
-    return children;
+    return hasError ? <ErrorPage reload={this.reload} /> : children;
   }
 }
 
