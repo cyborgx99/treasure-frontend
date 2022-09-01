@@ -4,5 +4,6 @@ export const pathKeys = {
   },
   user: {
     game: '/game',
+    scoreboard: '/scoreboard',
   },
 };
