@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { getErrorMessage } from 'utils/errorUtils';
 
 import { HttpClient, HttpConfig } from './types';
-import { getErrorMessage } from 'utils/errorUtils';
 
 class HttpService implements HttpClient {
   private constructor() {}
@@ -12,6 +12,7 @@ class HttpService implements HttpClient {
     if (!HttpService.instance) {
       HttpService.instance = new HttpService();
     }
+    this.instance.setTokenInterceptor();
     return HttpService.instance;
   }
 
@@ -22,6 +23,16 @@ class HttpService implements HttpClient {
       'Content-type': 'application/json',
     },
   });
+
+  private setTokenInterceptor() {
+    this.apiClient.interceptors.request.use(function (config) {
+      const token = localStorage.getItem('token');
+      if (config.headers && token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    });
+  }
 
   public get = async <T>(url: string, config?: HttpConfig) => {
     return this.apiClient
