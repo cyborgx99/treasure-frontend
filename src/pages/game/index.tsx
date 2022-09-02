@@ -1,80 +1,116 @@
-import { Button, Container, Grid } from '@mui/material';
-import { Box } from '@mui/system';
+import { Button, FormHelperText, Grid, Typography } from '@mui/material';
 import PageLayout from 'components/pageLayout';
+import Spinner from 'components/spinner';
 import {
   deselectAll,
+  getCurrentGameAction,
+  revealTileAction,
   selectCurrentRound,
+  selectGameError,
   selectGameId,
+  selectGameLoading,
+  selectGameStatus,
   selectSelectedTiles,
   selectTiles,
 } from 'features/game/gameSlice';
+import { GameStatus } from 'features/game/types';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { pathKeys } from 'routes/pathKeys';
+import { BottomContainer, GameMainContainer } from './styles';
 import TileComponent from './tileComponent';
 
 const GamePage = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const tiles = useAppSelector(selectTiles);
   const gameId = useAppSelector(selectGameId);
   const selectedTiles = useAppSelector(selectSelectedTiles);
-  const dispatch = useAppDispatch();
-  const isRevealDisabled = selectedTiles.length === 0;
   const currentRound = useAppSelector(selectCurrentRound);
+  const gameStatus = useAppSelector(selectGameStatus);
+  const gameError = useAppSelector(selectGameError);
+  const gameLoading = useAppSelector(selectGameLoading);
+  const isRevealDisabled = selectedTiles.length === 0;
+  const isGameCompleted = gameStatus === GameStatus.completed;
+
+  useEffect(() => {
+    dispatch(getCurrentGameAction());
+  }, [dispatch]);
+
+  const handleReveal = async () => {
+    if (!gameId) return;
+    await dispatch(revealTileAction({ tiles: selectedTiles, gameId }));
+  };
 
   const handleDeselect = () => {
     dispatch(deselectAll());
   };
 
+  const handleViewAllScores = () => {
+    navigate(pathKeys.user.scoreboard);
+  };
+
   return (
-    <PageLayout>
-      <Container
-        sx={{
-          flex: 1,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: ' center',
-        }}
-        maxWidth='xs'>
-        {gameId ? (
-          <Box
-            sx={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: 0.5,
-              padding: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {tiles.map((tile) => (
-              <TileComponent tile={tile} key={`${tile.row}${tile.col}`} />
-            ))}
-            <Grid container spacing={1}>
-              <Grid item xs={6}>
-                <Button
-                  fullWidth
-                  color='success'
-                  variant='contained'
-                  disabled={isRevealDisabled}>
-                  Reveal
-                </Button>
-              </Grid>
-              <Grid item xs={6}>
-                <Button
-                  disabled={isRevealDisabled}
-                  onClick={handleDeselect}
-                  fullWidth
-                  color='warning'
-                  variant='contained'>
-                  Deselect all
-                </Button>
-              </Grid>
-            </Grid>
-          </Box>
+    <PageLayout title='Game'>
+      <GameMainContainer maxWidth='xs'>
+        {gameLoading ? (
+          <Spinner />
         ) : (
-          <Button variant='contained' color='success'>
-            Start new game
-          </Button>
+          <>
+            <Typography component='p'> Score: {currentRound}</Typography>
+            {isGameCompleted && (
+              <Typography
+                sx={{
+                  backgroundColor: 'success.main',
+                  color: 'common.white',
+                  padding: 1,
+                  borderRadius: 0.5,
+                  margin: 1,
+                }}
+                component='p'>
+                You won!
+              </Typography>
+            )}
+            <BottomContainer>
+              {tiles.map((tile) => (
+                <TileComponent tile={tile} key={`${tile.row}${tile.col}`} />
+              ))}
+              <Grid container spacing={1}>
+                <Grid item xs={6}>
+                  <Button
+                    onClick={handleReveal}
+                    fullWidth
+                    color='success'
+                    variant='contained'
+                    disabled={isRevealDisabled}>
+                    Reveal
+                  </Button>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button
+                    disabled={isRevealDisabled}
+                    onClick={handleDeselect}
+                    fullWidth
+                    color='warning'
+                    variant='contained'>
+                    Deselect
+                  </Button>
+                </Grid>
+                <FormHelperText error>{gameError}</FormHelperText>
+              </Grid>
+              {isGameCompleted && (
+                <Button
+                  onClick={handleViewAllScores}
+                  fullWidth
+                  variant='contained'>
+                  View all scores
+                </Button>
+              )}
+            </BottomContainer>
+          </>
         )}
-      </Container>
+      </GameMainContainer>
     </PageLayout>
   );
 };
