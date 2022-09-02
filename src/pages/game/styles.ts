@@ -21,5 +21,5 @@ export const BottomContainer = styled(Box)({
   padding: 1,
   justifyContent: 'center',
   alignItems: 'center',
-  gap: 5,
+  gap: 4,
 });
