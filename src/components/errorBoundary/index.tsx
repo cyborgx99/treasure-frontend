@@ -19,7 +19,6 @@ class ErrorBoundary extends React.Component<
   }
 
   private readonly reload = () => {
-    // Show a PageLoader to give the user instant feedback when clicking "reload"
     this.setState({ reloading: true });
     window.location.reload();
   };

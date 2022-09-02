@@ -1,8 +1,8 @@
 import PageLayout from 'components/pageLayout';
 import {
-  getAuthError,
-  getAuthLoading,
-  loginUser,
+  selectAuthError,
+  selectAuthLoading,
+  loginUserAction,
 } from 'features/auth/authSlice';
 import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import React from 'react';
@@ -13,15 +13,15 @@ import { loginFormValues, loginValidationSchema } from './utils';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
-  const authError = useAppSelector(getAuthError);
-  const authLoading = useAppSelector(getAuthLoading);
+  const authError = useAppSelector(selectAuthError);
+  const authLoading = useAppSelector(selectAuthLoading);
 
-  const onSubmit = async (values: LoginFormValues) => {
-    await dispatch(loginUser(values));
+  const onSubmit = (values: LoginFormValues) => {
+    dispatch(loginUserAction(values));
   };
 
   return (
-    <PageLayout>
+    <PageLayout title='Login'>
       <MainLoginContainer maxWidth='xs'>
         <LoginForm
           error={authError}
