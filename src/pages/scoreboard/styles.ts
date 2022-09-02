@@ -8,6 +8,8 @@ export const StyledContainer = styled(Container)({
   alignItems: 'center',
   flex: 1,
   gap: 5,
+  marginTop: 10,
+  marginBottom: 10,
 });
 
 export const StyledTableRow = styled(TableRow)({

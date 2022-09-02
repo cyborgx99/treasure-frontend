@@ -53,7 +53,7 @@ const GamePage = () => {
 
   return (
     <PageLayout title='Game'>
-      <GameMainContainer maxWidth='xs'>
+      <GameMainContainer data-cy='game-container' maxWidth='xs'>
         {gameLoading ? (
           <Spinner />
         ) : (
@@ -61,6 +61,7 @@ const GamePage = () => {
             <Typography component='p'> Score: {currentRound}</Typography>
             {isGameCompleted && (
               <Typography
+                data-cy-win
                 sx={{
                   backgroundColor: 'success.main',
                   color: 'common.white',
@@ -79,6 +80,7 @@ const GamePage = () => {
               <Grid container spacing={1}>
                 <Grid item xs={6}>
                   <Button
+                    data-cy='reveal-button'
                     onClick={handleReveal}
                     fullWidth
                     color='success'
@@ -89,6 +91,7 @@ const GamePage = () => {
                 </Grid>
                 <Grid item xs={6}>
                   <Button
+                    data-cy='deselect-button'
                     disabled={isRevealDisabled}
                     onClick={handleDeselect}
                     fullWidth
@@ -101,6 +104,7 @@ const GamePage = () => {
               </Grid>
               {isGameCompleted && (
                 <Button
+                  data-cy-view-scores
                   onClick={handleViewAllScores}
                   fullWidth
                   variant='contained'>

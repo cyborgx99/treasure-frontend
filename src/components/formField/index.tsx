@@ -5,7 +5,7 @@ import { useFormFieldProps } from './useFormFieldProps';
 
 const FormTextField = ({ name, ...otherProps }: FormTextFieldProps) => {
   const textFieldProps = useFormFieldProps(name);
-  return <TextField {...textFieldProps} {...otherProps} />;
+  return <TextField data-cy-error={name} {...textFieldProps} {...otherProps} />;
 };
 
 export default FormTextField;
