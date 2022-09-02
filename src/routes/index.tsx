@@ -1,7 +1,11 @@
-import { selectCurrentUser } from 'features/auth/authSlice';
-import { useAppSelector } from 'hooks/redux';
+import {
+  getMeAction,
+  selectCurrentUser,
+  selectToken,
+} from 'features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from 'hooks/redux';
 import NotFoundPage from 'pages/notFound';
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Spinner from '../components/spinner';
 import { authorizedRoutes } from './authorizedRoutes';
@@ -11,6 +15,13 @@ import { unathorizedRoutes } from './unathorizedRoutes';
 
 const AppRoutes = () => {
   const user = useAppSelector(selectCurrentUser);
+  const token = useAppSelector(selectToken);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (token) dispatch(getMeAction());
+  }, [dispatch, token]);
+
   return (
     <BrowserRouter>
       <Suspense fallback={<Spinner />}>

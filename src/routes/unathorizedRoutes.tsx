@@ -1,5 +1,4 @@
 import { lazy } from 'react';
-
 import { pathKeys } from './pathKeys';
 import { RouteInterface } from './types';
 
