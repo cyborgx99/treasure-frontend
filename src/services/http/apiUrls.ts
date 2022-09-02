@@ -1,8 +1,11 @@
 export const apiUrls = {
   login: 'auth/login',
-  currentUser: 'auth/currentUser',
+  getMe: 'auth/getMe',
   game: {
     baseUrl: 'game',
     reveal: 'game/reveal',
+    start: 'game/start',
+    scoreboard: 'game/scoreboard',
+    currentGame: 'game/current',
   },
 };

@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import { localStorageKeys } from '../../constants';
 import { getErrorMessage } from 'utils/errorUtils';
 
 import { HttpClient, HttpConfig } from './types';
@@ -26,7 +27,7 @@ class HttpService implements HttpClient {
 
   private setTokenInterceptor() {
     this.apiClient.interceptors.request.use(function (config) {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem(localStorageKeys.token);
       if (config.headers && token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
