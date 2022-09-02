@@ -1,6 +1,6 @@
 ## Install NODE (NPM)
 
-How to install node [click](google.com)
+How to install node [click](http://google.com)
 
 ## Add .env file to the root
 
