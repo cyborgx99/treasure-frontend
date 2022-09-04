@@ -8,17 +8,16 @@ describe('Game functionality', () => {
   });
 
   it('Allows user to select up to 3 tiles', () => {
-    //default tab is user
     cy.url().should('include', '/game');
 
     cy.get('[data-cy="reveal-button"]').should('be.disabled');
     cy.get('[data-cy="deselect-button"]').should('be.disabled');
 
     // clicking 4 items
-    cy.get('[data-cy="1:1"]').click();
-    cy.get('[data-cy="1:2"]').click();
-    cy.get('[data-cy="2:1"]').click();
-    cy.get('[data-cy="3:1"]').click();
+    cy.get('[data-cy-coordinates="1:1"]').click();
+    cy.get('[data-cy-coordinates="1:2"]').click();
+    cy.get('[data-cy-coordinates="2:1"]').click();
+    cy.get('[data-cy-coordinates="3:1"]').click();
 
     // selected only 3
     cy.get('[data-cy-selected="true"]').should('have.length', 3);
@@ -30,21 +29,21 @@ describe('Game functionality', () => {
     cy.get('[data-cy="reveal-button"]').should('be.disabled');
     cy.get('[data-cy="deselect-button"]').should('be.disabled');
 
-    cy.get('[data-cy="1:1"]').click();
-    cy.get('[data-cy="1:2"]').click();
-    cy.get('[data-cy="2:1"]').click();
+    cy.get('[data-cy-coordinates="1:1"]').click();
+    cy.get('[data-cy-coordinates="1:2"]').click();
+    cy.get('[data-cy-coordinates="2:1"]').click();
 
     cy.get('[data-cy="reveal-button"]').click();
 
     const contentOptions = new RegExp(`${tileContents.join('|')}`, 'g');
 
-    cy.get('[data-cy="1:1"]').contains(contentOptions);
-    cy.get('[data-cy="1:2"]').contains(contentOptions);
-    cy.get('[data-cy="2:1"]').contains(contentOptions);
+    cy.get('[data-cy-coordinates="1:1"]').contains(contentOptions);
+    cy.get('[data-cy-coordinates="1:2"]').contains(contentOptions);
+    cy.get('[data-cy-coordinates="2:1"]').contains(contentOptions);
 
-    cy.get('[data-cy="1:1"]').should('be.disabled');
-    cy.get('[data-cy="1:2"]').should('be.disabled');
-    cy.get('[data-cy="2:1"]').should('be.disabled');
+    cy.get('[data-cy-coordinates="1:1"]').should('be.disabled');
+    cy.get('[data-cy-coordinates="1:2"]').should('be.disabled');
+    cy.get('[data-cy-coordinates="2:1"]').should('be.disabled');
   });
 
   it('Allows to deselect selected tiles', () => {
@@ -53,9 +52,9 @@ describe('Game functionality', () => {
     cy.get('[data-cy="reveal-button"]').should('be.disabled');
     cy.get('[data-cy="deselect-button"]').should('be.disabled');
 
-    cy.get('[data-cy="1:1"]').click();
-    cy.get('[data-cy="1:2"]').click();
-    cy.get('[data-cy="2:1"]').click();
+    cy.get('[data-cy-coordinates="1:1"]').click();
+    cy.get('[data-cy-coordinates="1:2"]').click();
+    cy.get('[data-cy-coordinates="2:1"]').click();
 
     cy.get('[data-cy="deselect-button"]').click();
 
@@ -70,21 +69,23 @@ describe('Game functionality', () => {
 
       cy.get(`[data-cy="game-container"]`).then((container) => {
         if (arr.length === 0) return;
-        if (container.find('button[data-cy][disabled]').length >= 25) {
+        if (
+          container.find('button[data-cy-tile-button][disabled]').length >= 25
+        ) {
           // recursively clicking 3 tiles and revealing until we get all of them disalbed (we won)
           return;
         }
 
         if (arr[last]) {
-          cy.get(`[data-cy="${arr[last]}"]`).click();
+          cy.get(`[data-cy-coordinates="${arr[last]}"]`).click();
         }
 
         if (arr[preLast]) {
-          cy.get(`[data-cy="${arr[preLast]}"]`).click();
+          cy.get(`[data-cy-coordinates="${arr[preLast]}"]`).click();
         }
 
         if (arr[prePreLast]) {
-          cy.get(`[data-cy="${arr[prePreLast]}"]`).click();
+          cy.get(`[data-cy-coordinates="${arr[prePreLast]}"]`).click();
         }
 
         cy.get('[data-cy="reveal-button"]').click();
@@ -113,22 +114,22 @@ describe('Saves progress', () => {
   });
 
   it('Allows to continue the game after reload', () => {
-    cy.get('[data-cy="1:1"]').click();
-    cy.get('[data-cy="1:2"]').click();
-    cy.get('[data-cy="2:1"]').click();
+    cy.get('[data-cy-coordinates="1:1"]').click();
+    cy.get('[data-cy-coordinates="1:2"]').click();
+    cy.get('[data-cy-coordinates="2:1"]').click();
 
     cy.get('[data-cy="reveal-button"]').click();
 
     const contentOptions = new RegExp(`${tileContents.join('|')}`, 'g');
 
-    cy.get('[data-cy="1:1"]').contains(contentOptions);
-    cy.get('[data-cy="1:2"]').contains(contentOptions);
-    cy.get('[data-cy="2:1"]').contains(contentOptions);
+    cy.get('[data-cy-coordinates="1:1"]').contains(contentOptions);
+    cy.get('[data-cy-coordinates="1:2"]').contains(contentOptions);
+    cy.get('[data-cy-coordinates="2:1"]').contains(contentOptions);
 
     cy.reload();
 
-    cy.get('[data-cy="1:1"]').contains(contentOptions);
-    cy.get('[data-cy="1:2"]').contains(contentOptions);
-    cy.get('[data-cy="2:1"]').contains(contentOptions);
+    cy.get('[data-cy-coordinates="1:1"]').contains(contentOptions);
+    cy.get('[data-cy-coordinates="1:2"]').contains(contentOptions);
+    cy.get('[data-cy-coordinates="2:1"]').contains(contentOptions);
   });
 });

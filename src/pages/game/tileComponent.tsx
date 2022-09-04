@@ -43,8 +43,9 @@ const TileComponent = ({ tile }: TyleComponentProps) => {
   return (
     <TileComponentContainer>
       <Button
-        data-cy={`${tile.col}:${tile.row}`}
+        data-cy-coordinates={`${tile.col}:${tile.row}`}
         data-cy-selected={isSelected}
+        data-cy-tile-button
         disabled={isDisabled}
         onClick={handleToggle}
         sx={{
